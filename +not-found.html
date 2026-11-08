@@ -1,50 +1,18 @@
-<!DOCTYPE html><html lang="nl"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/><title>Tankmaat</title><meta name="description" content="Houd samen ritten en tankbeurten bij en verdeel de brandstofkosten naar rato van de gereden kilometers."/><link rel="manifest" href="/tankmaat/manifest.json"/><link rel="icon" href="/tankmaat/icons/icon-192.png" type="image/png"/><link rel="apple-touch-icon" href="/tankmaat/icons/apple-touch-icon.png"/><meta name="theme-color" content="#176B5B"/><meta name="apple-mobile-web-app-capable" content="yes"/><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/><meta name="apple-mobile-web-app-title" content="Tankmaat"/><link rel="icon" href="/tankmaat/favicon.ico"/><link rel="preload" href="/tankmaat/_expo/static/js/web/__expo-metro-runtime-ed4c1cfa6193d76fc294130e42bd1916.js" as="script"/><link rel="preload" href="/tankmaat/_expo/static/js/web/_layout-258abbff941ae947263389bc813d788a.js" as="script"/><link rel="preload" href="/tankmaat/_expo/static/js/web/__common-9162c46c876dee1d0bfee13e503258b9.js" as="script"/><link rel="preload" href="/tankmaat/_expo/static/js/web/entry-638629b2cc6738e2ffce51b28d0f4d24.js" as="script"/><style id="expo-reset">#root,body,html{height:100%}body{overflow:hidden}#root{display:flex}</style><style>
+<!DOCTYPE html><html lang="nl"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/><title>Tankmaat</title><meta name="description" content="Houd samen ritten en tankbeurten bij en verdeel de brandstofkosten naar rato van de gereden kilometers."/><link rel="manifest" href="/tankmaat/manifest.json"/><link rel="icon" href="/tankmaat/icons/icon-192.png" type="image/png"/><link rel="apple-touch-icon" href="/tankmaat/icons/apple-touch-icon.png"/><meta name="theme-color" content="#176B5B"/><meta name="apple-mobile-web-app-capable" content="yes"/><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/><meta name="apple-mobile-web-app-title" content="Tankmaat"/><link rel="icon" href="/tankmaat/favicon.ico"/><link rel="preload" href="/tankmaat/_expo/static/js/web/__expo-metro-runtime-ed4c1cfa6193d76fc294130e42bd1916.js" as="script"/><link rel="preload" href="/tankmaat/_expo/static/js/web/_layout-f83790924293517a2abc687b08f742f9.js" as="script"/><link rel="preload" href="/tankmaat/_expo/static/js/web/__common-b5ebf8980709cd488c2470f8baf33365.js" as="script"/><link rel="preload" href="/tankmaat/_expo/static/js/web/entry-206335c6835e635dc442d1d894abcaf5.js" as="script"/><style id="expo-reset">#root,body,html{height:100%}body{overflow:hidden}#root{display:flex}</style><style>
 body { background-color: #F5F7F4; }
 
-#root {
-  box-sizing: border-box;
-  padding-top: env(safe-area-inset-top);
-  padding-bottom: env(safe-area-inset-bottom);
-  padding-left: env(safe-area-inset-left);
-  padding-right: env(safe-area-inset-right);
-}
-
 /*
-  De tabbalk hoort tégen de onderrand te zitten, niet te zweven boven de marge voor de streep van
-  de iPhone.
+  De veilige marges van het toestel staan bewust níét meer hier. Ze worden gemeten en als echte
+  getallen doorgegeven aan de componenten (zie src/lib/safeArea.ts en docs/DECISIONS.md #67);
+  dat is de enige manier waarop de tabbalk zijn eigen hoogte goed kan uitrekenen. Twee mechanismen
+  naast elkaar vochten alleen maar met elkaar.
 
-  Twee eerdere pogingen werkten niet, en waarom is het onthouden waard:
-  - Alleen de strook eronder kleuren verplaatste de balk niet; hij bleef zweven.
-  - De balk met een negatieve marge door de opvulling van #root laten steken werd afgeknipt:
-    react-native-web geeft elke View `overflow: hidden`, dus uitsteken buiten een ouder kan niet.
-
-  Wat wél werkt: #root houdt onderaan géén marge zodra er een tabbalk is, zodat de balk al op de
-  onderrand staat, en de balk groeit vervolgens naar beneden binnen de normale layout. Omdat
-  react-navigation de hoogte van de balk als inline stijl zet en react-native-web met `border-box`
-  rekent, zou opvulling van die vaste hoogte afgaan en de knoppen platdrukken — vandaar
-  `content-box`, zodat de opvulling eronder komt in plaats van ervan af.
-*/
-body:has([role="tablist"]) #root {
-  padding-bottom: 0;
-}
-
-/*
-  Met `#root` ervoor puur om zwaarder te wegen: react-native-web zet `box-sizing: border-box` via
-  een eigen klasse, die even zwaar telt als een kale attribuutselector maar later in de <head>
-  staat en dus zou winnen.
-*/
-#root :has(> [role="tablist"]) {
-  box-sizing: content-box;
-  padding-bottom: env(safe-area-inset-bottom);
-}
-
-/*
-  In de geïnstalleerde app plakt de titel van een scherm anders tegen de klok en het batterijpictogram
-  aan. De statusbalk is geen kader maar bedrukte achtergrond, dus er hoort wat lucht onder.
-  Alleen in de geïnstalleerde app: in een browser staat de adresbalk er al tussen.
+  Wat hier blijft is pure lucht onder de statusbalk, als vaste waarde: in de geïnstalleerde app
+  plakt de titel van een scherm anders tegen de klok aan. In een browser zit de adresbalk ertussen,
+  vandaar alleen in standalone.
 */
 @media (display-mode: standalone) {
-  #root { padding-top: calc(env(safe-area-inset-top) + 12px); }
+  #root { box-sizing: border-box; padding-top: 12px; }
 }
 </style><style id="react-native-stylesheet">[stylesheet-group="0"]{}
 body{margin:0;}
@@ -401,4 +369,4 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/tankmaat/sw.js');
   });
 }
-</script></head><body><div id="root"><!--$--><div class="css-g5y9jx r-13awgt0"></div><!--/$--></div><script defer="" src="/tankmaat/_expo/static/js/web/__expo-metro-runtime-ed4c1cfa6193d76fc294130e42bd1916.js"></script><script defer="" src="/tankmaat/_expo/static/js/web/_layout-258abbff941ae947263389bc813d788a.js"></script><script defer="" src="/tankmaat/_expo/static/js/web/__common-9162c46c876dee1d0bfee13e503258b9.js"></script><script defer="" src="/tankmaat/_expo/static/js/web/entry-638629b2cc6738e2ffce51b28d0f4d24.js"></script><script id="_R_">globalThis.__EXPO_ROUTER_HYDRATE__=true;</script></body></html>
+</script></head><body><div id="root"><!--$--><div class="css-g5y9jx r-13awgt0"></div><!--/$--></div><script defer="" src="/tankmaat/_expo/static/js/web/__expo-metro-runtime-ed4c1cfa6193d76fc294130e42bd1916.js"></script><script defer="" src="/tankmaat/_expo/static/js/web/_layout-f83790924293517a2abc687b08f742f9.js"></script><script defer="" src="/tankmaat/_expo/static/js/web/__common-b5ebf8980709cd488c2470f8baf33365.js"></script><script defer="" src="/tankmaat/_expo/static/js/web/entry-206335c6835e635dc442d1d894abcaf5.js"></script><script id="_R_">globalThis.__EXPO_ROUTER_HYDRATE__=true;</script></body></html>
