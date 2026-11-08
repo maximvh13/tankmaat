@@ -1,0 +1,28 @@
+{
+  "name": "Tankmaat",
+  "short_name": "Tankmaat",
+  "description": "Houd samen ritten en tankbeurten bij en verdeel de brandstofkosten naar rato van de gereden kilometers.",
+  "lang": "nl-NL",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F5F7F4",
+  "theme_color": "#176B5B",
+  "categories": ["travel", "finance", "utilities"],
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
