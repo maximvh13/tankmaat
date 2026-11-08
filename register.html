@@ -1,5 +1,24 @@
 <!DOCTYPE html><html lang="nl"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/><title>Tankmaat</title><meta name="description" content="Houd samen ritten en tankbeurten bij en verdeel de brandstofkosten naar rato van de gereden kilometers."/><link rel="manifest" href="/tankmaat/manifest.json"/><link rel="icon" href="/tankmaat/icons/icon-192.png" type="image/png"/><link rel="apple-touch-icon" href="/tankmaat/icons/apple-touch-icon.png"/><meta name="theme-color" content="#176B5B"/><meta name="apple-mobile-web-app-capable" content="yes"/><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/><meta name="apple-mobile-web-app-title" content="Tankmaat"/><link rel="icon" href="/tankmaat/favicon.ico"/><link rel="preload" href="/tankmaat/_expo/static/js/web/__expo-metro-runtime-ed4c1cfa6193d76fc294130e42bd1916.js" as="script"/><link rel="preload" href="/tankmaat/_expo/static/js/web/_layout-5b8ae9dacb902254ffd6ba8631faf373.js" as="script"/><link rel="preload" href="/tankmaat/_expo/static/js/web/_layout-ffd8648b4bf9a600ca5ce12591fc36e8.js" as="script"/><link rel="preload" href="/tankmaat/_expo/static/js/web/register-c9c50f39b76d79d4d5b08a96a8b49cbb.js" as="script"/><link rel="preload" href="/tankmaat/_expo/static/js/web/__common-d1d36870035cd384b5aecfc2d6e9c0a7.js" as="script"/><link rel="preload" href="/tankmaat/_expo/static/js/web/entry-eb15152183e12eeb06331253a53190fa.js" as="script"/><style id="expo-reset">#root,body,html{height:100%}body{overflow:hidden}#root{display:flex}</style><style>
 body { background-color: #F5F7F4; }
+
+/*
+  De strook onder de tabbalk krijgt de kleur van de balk zelf, zodat die doorloopt tot de onderrand
+  van het scherm in plaats van te zweven boven een reepje achtergrond. Alleen schilderen, geen
+  layout: de balk heeft een vaste hoogte die react-navigation zelf uitrekent, en daar moet je niet
+  met opvulling in gaan zitten. `:has` beperkt het tot schermen waar écht een tabbalk staat —
+  op inloggen en onboarding hoort die strook de gewone achtergrondkleur te houden.
+*/
+body:has([role="tablist"])::after {
+  content: '';
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: env(safe-area-inset-bottom);
+  background-color: #FFFFFF;
+  pointer-events: none;
+}
+
 #root {
   box-sizing: border-box;
   padding-top: env(safe-area-inset-top);
