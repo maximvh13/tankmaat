@@ -1,31 +1,41 @@
 <!DOCTYPE html><html lang="nl"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/><title>Tankmaat</title><meta name="description" content="Houd samen ritten en tankbeurten bij en verdeel de brandstofkosten naar rato van de gereden kilometers."/><link rel="manifest" href="/tankmaat/manifest.json"/><link rel="icon" href="/tankmaat/icons/icon-192.png" type="image/png"/><link rel="apple-touch-icon" href="/tankmaat/icons/apple-touch-icon.png"/><meta name="theme-color" content="#176B5B"/><meta name="apple-mobile-web-app-capable" content="yes"/><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/><meta name="apple-mobile-web-app-title" content="Tankmaat"/><link rel="icon" href="/tankmaat/favicon.ico"/><link rel="preload" href="/tankmaat/_expo/static/js/web/__expo-metro-runtime-ed4c1cfa6193d76fc294130e42bd1916.js" as="script"/><link rel="preload" href="/tankmaat/_expo/static/js/web/_layout-258abbff941ae947263389bc813d788a.js" as="script"/><link rel="preload" href="/tankmaat/_expo/static/js/web/__common-9162c46c876dee1d0bfee13e503258b9.js" as="script"/><link rel="preload" href="/tankmaat/_expo/static/js/web/entry-638629b2cc6738e2ffce51b28d0f4d24.js" as="script"/><style id="expo-reset">#root,body,html{height:100%}body{overflow:hidden}#root{display:flex}</style><style>
 body { background-color: #F5F7F4; }
 
-/*
-  De tabbalk hoort tegen de onderrand van het scherm te zitten, niet te zweven boven de marge voor
-  de streep van de iPhone. Dit verlengt de balk zélf: hij steekt met een negatieve marge door de
-  opvulling van #root heen, en vult die ruimte op met zijn eigen opvulling — dus met zijn eigen
-  achtergrondkleur. De knoppen blijven op hun plek, boven de streep.
-
-  `content-box` is hier de kern. react-navigation zet de hoogte van de balk als inline stijl, en
-  react-native-web rekent standaard met `border-box`; opvulling zou dan van die vaste hoogte
-  afgaan en de knoppen platdrukken. Met `content-box` komt de opvulling eronder.
-
-  `:has(> [role="tablist"])` mikt op de balk zelf: dat is het enige element met de knoppenrij als
-  direct kind, en het is ook het element dat de achtergrondkleur draagt.
-*/
-:has(> [role="tablist"]) {
-  box-sizing: content-box;
-  padding-bottom: env(safe-area-inset-bottom);
-  margin-bottom: calc(-1 * env(safe-area-inset-bottom));
-}
-
 #root {
   box-sizing: border-box;
   padding-top: env(safe-area-inset-top);
   padding-bottom: env(safe-area-inset-bottom);
   padding-left: env(safe-area-inset-left);
   padding-right: env(safe-area-inset-right);
+}
+
+/*
+  De tabbalk hoort tégen de onderrand te zitten, niet te zweven boven de marge voor de streep van
+  de iPhone.
+
+  Twee eerdere pogingen werkten niet, en waarom is het onthouden waard:
+  - Alleen de strook eronder kleuren verplaatste de balk niet; hij bleef zweven.
+  - De balk met een negatieve marge door de opvulling van #root laten steken werd afgeknipt:
+    react-native-web geeft elke View `overflow: hidden`, dus uitsteken buiten een ouder kan niet.
+
+  Wat wél werkt: #root houdt onderaan géén marge zodra er een tabbalk is, zodat de balk al op de
+  onderrand staat, en de balk groeit vervolgens naar beneden binnen de normale layout. Omdat
+  react-navigation de hoogte van de balk als inline stijl zet en react-native-web met `border-box`
+  rekent, zou opvulling van die vaste hoogte afgaan en de knoppen platdrukken — vandaar
+  `content-box`, zodat de opvulling eronder komt in plaats van ervan af.
+*/
+body:has([role="tablist"]) #root {
+  padding-bottom: 0;
+}
+
+/*
+  Met `#root` ervoor puur om zwaarder te wegen: react-native-web zet `box-sizing: border-box` via
+  een eigen klasse, die even zwaar telt als een kale attribuutselector maar later in de <head>
+  staat en dus zou winnen.
+*/
+#root :has(> [role="tablist"]) {
+  box-sizing: content-box;
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 /*
