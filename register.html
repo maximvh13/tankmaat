@@ -4,12 +4,18 @@ body { background-color: #F5F7F4; }
 /*
   De app moet het hele scherm vullen, tot onder de streep van de iPhone.
 
-  Expo zet `height: 100%` op html/body/#root. In de geïnstalleerde app op iOS valt de ruimte bij
-  de streep daar niet altijd binnen, en dan eindigt de app erboven — met de achtergrondkleur van
-  de body eronder. Dat ziet eruit alsof de tabbalk zweeft, terwijl de balk zelf gewoon onderaan de
-  app staat. `dvh` is de hoogte van het zichtbare venster inclusief die ruimte.
+  Expo zet `height: 100%` op html/body/#root. In de geïnstalleerde app op iOS is dat niet het hele
+  scherm: op het toestel waarop dit misging gaf het venster 793 punten terug terwijl het scherm 852
+  is. De app hield dus 59 punten boven de onderrand op, en de achtergrond eronder zag eruit als een
+  zwevende tabbalk — terwijl die balk netjes onderaan de app stond (nagemeten: balk tot 793 van 793).
+
+  Van alle hoogtematen geeft alleen `vh` daar de volle 852 (dvh, svh en -webkit-fill-available
+  gaven alle drie 793). Alleen in de geïnstalleerde app, want in een gewoon tabblad is `vh` juist
+  de grote variant en zou de onderkant onder de browserbalk verdwijnen; daar klopt de standaard al.
 */
-html, body, #root { height: 100dvh; }
+@media (display-mode: standalone) {
+  html, body, #root { height: 100vh; }
+}
 
 /*
   De veilige marges van het toestel staan bewust níét meer hier. Ze worden gemeten en als echte
